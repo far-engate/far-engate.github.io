@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Фарит — фотограф · Казань · TFP-съёмки</title>
+<meta name="description" content="Фарит, фотограф из Казани. Ищу людей с яркой внешностью, стилем и харизмой для съёмок на условиях TFP. Портфолио, условия, контакты.">
+
+<!--
+  ═══════════════════════════════════════════════════════════════
+  КАК ПОСТАВИТЬ СВОИ ФОТО (папка photos в корне проекта):
+  1. Рядом с этим файлом (index.html) создай папку:  photos/
+  2. Положи туда свои файлы с именами:
+       hero.jpg        — главный портрет на первом экране
+       photo-01.jpg … photo-10.jpg — работы для галереи и ленты
+  3. Обнови страницу — сайт сам подхватит твои фото.
+     Если какого-то файла нет — временно покажется заглушка.
+  Формат любой: .jpg / .jpeg / .png / .webp (меняй расширение
+  в константе PHOTO_EXT внутри <script> в конце файла).
+  Контакты меняются там же, в константе CONTACTS.
+
+  ═══════════════════════════════════════════════════════════════
+-->
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/manrope@5/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5/400-italic.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5/700-italic.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/jetbrains-mono@5/index.css">
+
+<style>
+/* ============ БАЗА ============ */
+:root{
+  --ink:#0d0d0e;
+  --ink-2:#151517;
+  --paper:#efece5;
+  --paper-2:#e5e1d6;
+  --accent:#ff4d17;
+  --muted:#8f8f95;
+  --muted-dark:#6d6a63;
+  --line-d:rgba(239,236,229,.14);
+  --line-l:rgba(13,13,14,.16);
+  --sans:'Manrope Variable',system-ui,-apple-system,sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+  --mono:'JetBrains Mono Variable',ui-monospace,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --ease-io:cubic-bezier(.77,0,.18,1);
+  --nav-h:76px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 20px)}
+body{
+  background:var(--ink);color:var(--paper);
+  font-family:var(--sans);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body.lock{overflow:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+::selection{background:var(--accent);color:var(--ink)}
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--ink)}
+::-webkit-scrollbar-thumb{background:#2b2b2e;border:2px solid var(--ink)}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+.mono{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase}
+em.acc{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent);letter-spacing:0;text-transform:none}
+html.custom-cursor,html.custom-cursor *{cursor:none!important}
+
+/* ============ ЗЕРНО / ПЛЁНКА ============ */
+.grain{
+  position:fixed;inset:-120%;z-index:250;pointer-events:none;opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  animation:grain 7s steps(10) infinite;
+}
+@keyframes grain{
+  0%{transform:translate(0,0)}10%{transform:translate(-5%,-8%)}20%{transform:translate(-12%,4%)}
+  30%{transform:translate(6%,-10%)}40%{transform:translate(-4%,12%)}50%{transform:translate(-10%,5%)}
+  60%{transform:translate(10%,0)}70%{transform:translate(0,10%)}80%{transform:translate(-8%,-4%)}
+  90%{transform:translate(8%,6%)}100%{transform:translate(0,0)}
+}
+
+/* ============ КУРСОР ============ */
+.cursor-dot,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:500;border-radius:50%;transform:translate(-50%,-50%)}
+.cursor-dot{width:6px;height:6px;background:var(--accent)}
+.cursor-ring{
+  width:36px;height:36px;border:1px solid rgba(239,236,229,.55);
+  display:flex;align-items:center;justify-content:center;
+  transition:width .35s var(--ease),height .35s var(--ease),background-color .35s,border-color .35s;
+}
+.cursor-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);opacity:0;transition:opacity .2s}
+body.cur-link .cursor-ring{width:58px;height:58px;background:rgba(255,77,23,.14);border-color:var(--accent)}
+body.cur-view .cursor-ring{width:82px;height:82px;background:var(--accent);border-color:var(--accent)}
+body.cur-view .cursor-label{opacity:1}
+body.cur-view .cursor-dot{opacity:0}
+@media (hover:none),(pointer:coarse){.cursor-dot,.cursor-ring{display:none}}
+
+/* ============ ПРЕЛОАДЕР ============ */
+#preloader{
+  position:fixed;inset:0;z-index:300;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:5vh 5vw;transition:transform .9s var(--ease-io) .1s;
+}
+#preloader.done{transform:translateY(-101%)}
+.pre-name{font-weight:800;font-size:clamp(3rem,12vw,9rem);line-height:.9;letter-spacing:-.03em;overflow:hidden}
+.pre-name span{display:block;transform:translateY(110%);animation:preUp 1s var(--ease) .15s forwards}
+.pre-name em{font-family:var(--serif);font-style:italic;color:var(--accent)}
+@keyframes preUp{to{transform:none}}
+.pre-bottom{display:flex;justify-content:space-between;align-items:baseline;margin-top:3vh}
+.pre-bottom .mono{color:var(--muted)}
+#preCount{font-family:var(--mono);font-size:clamp(1.4rem,4vw,2.6rem);color:var(--accent)}
+
+/* ============ ПРОГРЕСС ============ */
+.progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:160;background:transparent;pointer-events:none}
+#progressBar{display:block;height:100%;width:0;background:var(--accent)}
+
+/* ============ НАВИГАЦИЯ (размытая подложка) ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:140;
+  display:flex;align-items:center;justify-content:space-between;
+  min-height:var(--nav-h);padding:16px 5vw;
+  color:#fff;
+  background:rgba(13,13,14,.42);
+  -webkit-backdrop-filter:blur(16px) saturate(150%);
+  backdrop-filter:blur(16px) saturate(150%);
+  border-bottom:1px solid rgba(239,236,229,.10);
+  transition:background-color .45s var(--ease),color .45s var(--ease),border-color .45s var(--ease),box-shadow .45s var(--ease),padding .35s var(--ease);
+}
+.nav.scrolled{background:rgba(10,10,11,.78);box-shadow:0 10px 40px -22px rgba(0,0,0,.9);padding-top:12px;padding-bottom:12px}
+/* светлая секция под шапкой → светлая шапка */
+.nav.on-light{
+  background:rgba(239,236,229,.62);
+  border-bottom-color:rgba(13,13,14,.14);
+  color:var(--ink);
+}
+.nav.on-light.scrolled{background:rgba(239,236,229,.86)}
+.nav.on-light .nav-link::after{background:var(--ink)}
+.nav.on-light .nav-cta{border-color:rgba(13,13,14,.35)}
+.nav.on-light .nav-cta:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.nav.on-light .burger i{background:var(--ink)}
+
+.logo{display:flex;align-items:baseline;gap:12px;position:relative}
+.logo b{font-weight:800;font-size:1.15rem;letter-spacing:.02em}
+.logo .mono{opacity:.65}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-link{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;position:relative;padding:4px 0;opacity:.85;transition:opacity .3s}
+.nav-link:hover,.nav-link.active{opacity:1}
+.nav-link::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:#fff;transition:width .35s var(--ease)}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.nav-cta{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid currentColor;padding:10px 18px;border-radius:999px;
+  transition:background .3s,color .3s,border-color .3s;
+}
+.nav-cta:hover{background:#fff;color:#000;border-color:#fff}
+.burger{display:none;flex-direction:column;gap:6px;padding:6px}
+.burger i{display:block;width:26px;height:2px;background:#fff;transition:transform .4s var(--ease),opacity .3s}
+body.menu-open .burger i:nth-child(1){transform:translateY(8px) rotate(45deg)}
+body.menu-open .burger i:nth-child(2){opacity:0}
+body.menu-open .burger i:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+/* открытое меню — шапка прозрачная, поверх тёмного оверлея */
+body.menu-open .nav{
+  background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;
+  border-bottom-color:transparent;box-shadow:none;color:#fff;
+}
+body.menu-open .nav .nav-link::after{background:#fff}
+body.menu-open .nav .burger i{background:#fff}
+@media(max-width:900px){
+  .nav-links,.nav-cta{display:none}
+  .burger{display:flex}
+}
+.menu{
+  position:fixed;inset:0;z-index:130;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;padding:0 8vw;gap:6px;
+  clip-path:inset(0 0 100% 0);transition:clip-path .7s var(--ease-io);
+}
+body.menu-open .menu{clip-path:inset(0 0 0 0)}
+.menu a.m-link{
+  font-weight:800;font-size:clamp(2rem,9vw,3.6rem);letter-spacing:-.02em;line-height:1.15;
+  display:flex;align-items:baseline;gap:16px;color:var(--paper);
+  opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s var(--ease),color .3s;
+}
+.menu a.m-link:hover{color:var(--accent)}
+.menu a.m-link .mono{color:var(--accent);font-size:.7rem}
+body.menu-open .menu a.m-link{opacity:1;transform:none}
+body.menu-open .menu a.m-link:nth-child(1){transition-delay:.15s}
+body.menu-open .menu a.m-link:nth-child(2){transition-delay:.22s}
+body.menu-open .menu a.m-link:nth-child(3){transition-delay:.29s}
+body.menu-open .menu a.m-link:nth-child(4){transition-delay:.36s}
+.menu .m-foot{margin-top:6vh;color:var(--muted)}
+
+/* ============ REVEAL ============ */
+[data-reveal]{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+[data-reveal].in{opacity:1;transform:none}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100svh;position:relative;display:grid;
+  grid-template-columns:1.05fr .95fr;gap:4vw;align-items:center;
+  padding:calc(var(--nav-h) + 60px) 5vw 90px;overflow:hidden;
+}
+.hero-watermark{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-weight:800;font-size:26vw;line-height:1;letter-spacing:-.04em;
+  color:transparent;-webkit-text-stroke:1px rgba(239,236,229,.05);pointer-events:none;user-select:none;
+}
+.kicker{display:flex;align-items:center;gap:12px;color:var(--muted);margin-bottom:26px}
+.kicker .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.4}}
+.hero-title{font-weight:800;font-size:clamp(2.6rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.035em;text-transform:uppercase}
+.hero-title .line{display:block;overflow:hidden}
+.hero-title .line>span{display:block;transform:translateY(112%);transition:transform 1.1s var(--ease)}
+body.loaded .hero-title .line:nth-child(1)>span{transition-delay:.35s;transform:none}
+body.loaded .hero-title .line:nth-child(2)>span{transition-delay:.45s;transform:none}
+body.loaded .hero-title .line:nth-child(3)>span{transition-delay:.55s;transform:none}
+.hero-lead{max-width:46ch;color:var(--muted);margin:28px 0 36px;font-size:1.02rem}
+.hero-lead b{color:var(--paper);font-weight:600}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:999px;
+  font-family:var(--mono);font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;
+  transition:transform .35s var(--ease),background .3s,color .3s,box-shadow .35s;will-change:transform;
+}
+.btn-fill{background:var(--accent);color:var(--ink);font-weight:700}
+.btn-fill:hover{box-shadow:0 12px 40px -10px rgba(255,77,23,.65)}
+.btn-ghost{border:1px solid var(--line-d);color:var(--paper)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+.hero-visual{position:relative;justify-self:end;width:min(100%,520px)}
+.hero-frame{position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--ink-2)}
+.hero-frame img{
+  width:100%;height:100%;object-fit:cover;
+  clip-path:inset(100% 0 0 0);transition:clip-path 1.3s var(--ease-io) .5s;
+  animation:kb 18s ease-in-out 2s infinite alternate;
+}
+body.loaded .hero-frame img{clip-path:inset(0 0 0 0)}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.1) translate(1.5%,-2%)}}
+
+/* ── плашка «портрет · свет · характер» ──
+   десктоп: СПРАВА-СНИЗУ (бейдж слева), мобильные: СЛЕВА-СНИЗУ (бейдж справа) */
+.hero-tag{
+  position:absolute;right:14px;bottom:14px;left:auto;
+  background:rgba(13,13,14,.82);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  color:var(--paper);padding:8px 14px;border-right:2px solid var(--accent);
+  max-width:calc(100% - 120px);
+}
+/* ── круглый бейдж ── */
+.badge{position:absolute;width:132px;height:132px;left:-46px;bottom:-46px;right:auto;animation:spin 16s linear infinite;filter:drop-shadow(0 10px 24px rgba(0,0,0,.45))}
+@keyframes spin{to{transform:rotate(360deg)}}
+.badge .badge-bg{fill:var(--accent)}
+.badge text{font-family:var(--mono);font-size:12.5px;letter-spacing:.22em;fill:var(--ink);text-transform:uppercase}
+.badge .badge-star{font-size:22px}
+
+.hero-coords{
+  position:absolute;right:1.4vw;top:50%;transform:translateY(-50%);
+  writing-mode:vertical-rl;color:var(--muted);opacity:.7;
+}
+.scroll-hint{position:absolute;left:5vw;bottom:34px;display:flex;align-items:center;gap:12px;color:var(--muted)}
+.scroll-hint i{display:block;width:44px;height:1px;background:var(--muted);position:relative;overflow:hidden}
+.scroll-hint i::after{content:'';position:absolute;inset:0;background:var(--accent);animation:slide 2.2s var(--ease-io) infinite}
+@keyframes slide{0%{transform:translateX(-100%)}55%{transform:translateX(0)}100%{transform:translateX(101%)}}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding-top:calc(var(--nav-h) + 46px);gap:48px}
+  .hero-visual{justify-self:start;width:100%}
+  .hero-coords{display:none}
+  /* мобильные: бейдж справа-снизу, плашка слева-снизу */
+  .badge{left:auto;right:-18px;bottom:-28px;width:104px;height:104px}
+  .hero-tag{right:auto;left:12px;bottom:12px;border-right:none;border-left:2px solid var(--accent);max-width:calc(100% - 110px)}
+}
+
+/* ============ БЕГУЩАЯ СТРОКА ============ */
+.ticker{background:var(--accent);color:var(--ink);overflow:hidden;transform:rotate(-1.2deg) scale(1.02);margin:10px 0}
+.ticker-track{display:flex;width:max-content;animation:tick 26s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span{
+  font-family:var(--mono);font-size:.85rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  padding:14px 0;white-space:nowrap;
+}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ============ СЕКЦИИ ============ */
+.sec{padding:120px 5vw;position:relative}
+.sec-head{margin-bottom:64px}
+.sec-meta{display:flex;align-items:center;gap:16px;color:var(--muted);margin-bottom:22px}
+.sec-meta .num{color:var(--accent)}
+.sec-meta .rule{flex:0 0 60px;height:1px;background:currentColor;opacity:.4}
+.sec-title{font-weight:800;font-size:clamp(2.1rem,5.4vw,4.4rem);line-height:1.04;letter-spacing:-.03em;text-transform:uppercase;max-width:16ch}
+.sec-title em.acc{text-transform:none}
+
+/* --- кого ищу --- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-d);border:1px solid var(--line-d)}
+.card{background:var(--ink);padding:40px 32px 46px;position:relative;overflow:hidden;transition:background .45s}
+.card:hover{background:var(--ink-2)}
+.card .c-num{font-family:var(--mono);font-size:.75rem;color:var(--accent);letter-spacing:.2em}
+.card h3{font-size:1.45rem;font-weight:800;letter-spacing:-.01em;margin:18px 0 12px}
+.card p{color:var(--muted);font-size:.95rem}
+.card::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--accent);transition:width .55s var(--ease)}
+.card:hover::after{width:100%}
+.card .c-ico{position:absolute;right:24px;top:34px;font-family:var(--serif);font-style:italic;font-size:2.2rem;color:rgba(239,236,229,.12);transition:color .4s,transform .5s var(--ease)}
+.card:hover .c-ico{color:var(--accent);transform:rotate(-8deg)}
+.looking-note{
+  margin-top:56px;font-family:var(--serif);font-style:italic;
+  font-size:clamp(1.3rem,3.2vw,2.2rem);line-height:1.35;color:var(--paper);max-width:26ch;
+}
+.looking-note b{color:var(--accent);font-weight:400}
+@media(max-width:900px){.cards{grid-template-columns:1fr}}
+
+/* --- TFP (светлая) --- */
+.sec-light{background:var(--paper);color:var(--ink)}
+.sec-light .sec-meta{color:var(--muted-dark)}
+.tfp-lead{max-width:60ch;font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.65;margin-bottom:64px}
+.tfp-lead mark{background:linear-gradient(transparent 62%,rgba(255,77,23,.35) 0);color:inherit;padding:0 2px}
+.tfp-cols{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-bottom:80px}
+.tfp-col h4{font-family:var(--mono);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.tfp-col h4::after{content:'';flex:1;height:1px;background:var(--line-l)}
+.tfp-col ul{list-style:none}
+.tfp-col li{padding:14px 0 14px 30px;border-bottom:1px solid var(--line-l);position:relative;font-size:.98rem}
+.tfp-col li::before{content:'—';position:absolute;left:0;color:var(--accent);font-weight:700}
+.tfp-note{
+  border:1px dashed var(--ink);padding:22px 26px;display:flex;gap:16px;align-items:flex-start;
+  font-size:.95rem;margin-bottom:80px;background:rgba(13,13,14,.03);
+}
+.tfp-note .star{color:var(--accent);font-size:1.3rem;line-height:1}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.step{border-top:2px solid var(--ink);padding-top:20px;position:relative}
+.step .s-num{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--accent)}
+.step h5{font-size:1.2rem;font-weight:800;margin:12px 0 8px}
+.step p{font-size:.9rem;color:var(--muted-dark)}
+.step::before{
+  content:'';position:absolute;top:-5px;left:0;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);transform:scale(0);transition:transform .5s var(--ease);
+}
+.step.in::before{transform:scale(1)}
+@media(max-width:900px){.tfp-cols{grid-template-columns:1fr;gap:36px}.steps{grid-template-columns:1fr 1fr;gap:36px}}
+@media(max-width:560px){.steps{grid-template-columns:1fr}}
+
+/* --- ГАЛЕРЕЯ --- */
+.g-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.filters{display:flex;gap:10px;flex-wrap:wrap}
+.filter{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  padding:9px 18px;border:1px solid var(--line-d);border-radius:999px;color:var(--muted);
+  transition:all .3s;
+}
+.filter:hover{color:var(--paper);border-color:var(--paper)}
+.filter.on{background:var(--accent);border-color:var(--accent);color:var(--ink);font-weight:700}
+.g-grid{columns:3;column-gap:14px}
+@media(max-width:980px){.g-grid{columns:2}}
+@media(max-width:560px){.g-grid{columns:1}}
+.g-item{break-inside:avoid;margin:0 0 14px;position:relative;overflow:hidden;background:var(--ink-2)}
+.g-item img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease),filter .6s;filter:saturate(.92)}
+.g-item:hover img{transform:scale(1.06);filter:saturate(1.05)}
+.g-cap{
+  position:absolute;inset:auto 0 0 0;padding:16px;display:flex;justify-content:space-between;align-items:baseline;
+  background:linear-gradient(transparent,rgba(6,6,7,.8));color:#fff;
+  opacity:0;transform:translateY(10px);transition:opacity .4s,transform .45s var(--ease);
+}
+.g-item:hover .g-cap{opacity:1;transform:none}
+.g-cap b{font-size:.95rem;font-weight:700;letter-spacing:.01em}
+.g-cap .mono{font-size:.62rem;opacity:.75}
+.g-item::after{
+  content:'+';position:absolute;top:12px;right:14px;color:#fff;font-size:1.3rem;font-weight:300;
+  opacity:0;transform:rotate(-90deg);transition:opacity .35s,transform .45s var(--ease);
+}
+.g-item:hover::after{opacity:1;transform:none}
+@keyframes pop{from{opacity:0;transform:translateY(26px) scale(.985)}to{opacity:1;transform:none}}
+.g-item.pop{animation:pop .75s var(--ease) both}
+.g-empty{color:var(--muted);padding:40px 0;font-family:var(--mono);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
+
+/* --- ЛЕНТА-СТРИП --- */
+.strip-wrap{overflow:hidden;border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d);background:var(--ink)}
+.strip{display:flex;gap:14px;width:max-content;padding:18px 0;animation:stripMove 40s linear infinite}
+.strip-wrap:hover .strip{animation-play-state:paused}
+@keyframes stripMove{to{transform:translateX(-50%)}}
+.strip figure{width:clamp(200px,24vw,340px);aspect-ratio:3/2;overflow:hidden;position:relative;flex:none}
+.strip figure img{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) contrast(1.05);transition:filter .5s,transform .8s var(--ease)}
+.strip figure:hover img{filter:none;transform:scale(1.05)}
+
+/* --- КОНТАКТЫ (светлая) --- */
+.contact-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:start}
+.c-list{border-bottom:1px solid var(--line-l)}
+.c-row{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:30px 0;border-top:1px solid var(--line-l);position:relative;color:inherit;
+}
+.c-row .c-key{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-dark);flex:0 0 110px}
+.c-row .c-val{font-weight:800;font-size:clamp(1.35rem,3.4vw,2.5rem);letter-spacing:-.02em;transition:transform .45s var(--ease),color .3s;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-row .c-go{font-size:1.4rem;transition:transform .4s var(--ease),color .3s}
+.c-row:hover .c-val{transform:translateX(12px);color:var(--accent)}
+.c-row:hover .c-go{transform:translate(6px,-6px);color:var(--accent)}
+.copy-btn{
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--line-l);border-radius:999px;padding:7px 14px;color:var(--muted-dark);transition:all .3s;flex:none;
+}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.c-note{margin-top:26px;color:var(--muted-dark);font-size:.92rem;max-width:44ch}
+.c-note b{color:var(--ink)}
+.form{background:var(--ink);color:var(--paper);padding:40px 36px;position:relative;overflow:hidden}
+.form::before{content:'✦';position:absolute;right:22px;top:16px;color:var(--accent);font-size:1.2rem}
+.form h3{font-weight:800;font-size:1.5rem;letter-spacing:-.01em;margin-bottom:6px}
+.form .f-sub{color:var(--muted);font-size:.88rem;margin-bottom:28px}
+.field{margin-bottom:22px}
+.field label{display:block;font-family:var(--mono);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.field input,.field textarea{
+  width:100%;background:transparent;border:none;border-bottom:1px solid var(--line-d);
+  color:var(--paper);font-family:var(--sans);font-size:1rem;padding:10px 2px;outline:none;
+  transition:border-color .3s;resize:vertical;
+}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
+.field input::placeholder,.field textarea::placeholder{color:#55555a}
+.form .btn{width:100%;justify-content:center}
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;gap:48px}}
+
+/* ============ ФУТЕР ============ */
+footer{background:var(--ink);border-top:1px solid var(--line-d);padding:44px 5vw;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer .f-name{font-weight:800;font-size:1.3rem;letter-spacing:-.01em}
+footer .f-name em{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:400}
+footer .mono{color:var(--muted)}
+.to-top{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:8px;color:var(--muted);transition:color .3s}
+.to-top:hover{color:var(--accent)}
+
+/* ============ ЛАЙТБОКС ============ */
+.lightbox{
+  position:fixed;inset:0;z-index:200;background:rgba(8,8,9,.96);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;
+}
+.lightbox.open{opacity:1;visibility:visible}
+.lb-fig{max-width:min(86vw,1100px);text-align:center}
+.lb-fig img{max-height:76vh;max-width:100%;margin:0 auto;object-fit:contain;box-shadow:0 30px 90px -20px rgba(0,0,0,.8);transform:scale(.96);transition:transform .45s var(--ease)}
+.lightbox.open .lb-fig img{transform:scale(1)}
+.lb-fig figcaption{display:flex;justify-content:center;gap:18px;align-items:baseline;margin-top:18px;color:var(--paper)}
+.lb-fig figcaption b{font-size:1.05rem}
+.lb-fig figcaption .mono{color:var(--muted)}
+.lb-btn{
+  position:absolute;width:56px;height:56px;border:1px solid var(--line-d);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:var(--paper);font-size:1.1rem;
+  transition:background .3s,color .3s,border-color .3s,transform .3s;
+}
+.lb-btn:hover{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.lb-close{top:26px;right:26px}
+.lb-prev{left:26px;top:50%;transform:translateY(-50%)}
+.lb-next{right:26px;top:50%;transform:translateY(-50%)}
+.lb-count{position:absolute;left:28px;top:34px;color:var(--muted)}
+@media(max-width:640px){.lb-prev{left:12px}.lb-next{right:12px}.lb-close{top:14px;right:14px}}
+
+/* ============ ПИК-ПРЕВЬ / ТОСТ ============ */
+.peek{
+  position:fixed;z-index:150;width:230px;height:290px;overflow:hidden;pointer-events:none;
+  top:0;left:0;opacity:0;transform:translate(-50%,-50%) scale(.85) rotate(-4deg);
+  transition:opacity .35s var(--ease),transform .35s var(--ease);box-shadow:0 24px 60px -18px rgba(0,0,0,.5);
+}
+.peek.on{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-4deg)}
+.peek img{width:100%;height:100%;object-fit:cover}
+@media(max-width:900px){.peek{display:none}}
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,80px);z-index:400;
+  background:var(--paper);color:var(--ink);padding:13px 26px;border-radius:999px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+  transition:transform .5s var(--ease);box-shadow:0 14px 40px -10px rgba(0,0,0,.5);
+}
+.toast.on{transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ПРЕЛОАДЕР -->
+<div id="preloader">
+  <div class="pre-name"><span>ФОТОГРАФ <em>КАЗАНЬ</em></span></div>
+  <div class="pre-bottom">
+    <span class="mono">фотограф · казань · tfp</span>
+    <span id="preCount">000</span>
+  </div>
+</div>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"><span class="cursor-label" id="cursorLabel">смотреть</span></div>
+<div class="progress"><span id="progressBar"></span></div>
+
+<!-- НАВИГАЦИЯ -->
+<header class="nav" id="nav">
+  <a class="logo" href="#top" aria-label="На главную">
+    <b>ФОТОГРАФ</b><span class="mono">казань</span>
+  </a>
+  <nav class="nav-links" aria-label="Основное меню">
+    <a class="nav-link" href="#looking">кого ищу</a>
+    <a class="nav-link" href="#tfp">условия tfp</a>
+    <a class="nav-link" href="#gallery">работы</a>
+    <a class="nav-link" href="#contacts">контакты</a>
+  </nav>
+  <a class="nav-cta" href="#contacts" data-magnetic>написать мне</a>
+  <button class="burger" id="burger" aria-label="Меню"><i></i><i></i><i></i></button>
+</header>
+
+<!-- МОБИЛЬНОЕ МЕНЮ -->
+<div class="menu" id="menu">
+  <a class="m-link" href="#looking"><span class="mono">01</span>кого ищу</a>
+  <a class="m-link" href="#tfp"><span class="mono">02</span>условия tfp</a>
+  <a class="m-link" href="#gallery"><span class="mono">03</span>работы</a>
+  <a class="m-link" href="#contacts"><span class="mono">04</span>контакты</a>
+  <div class="m-foot mono">telegram · телефон · instagram</div>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-watermark" aria-hidden="true">KZN</div>
+    <div class="hero-copy">
+      <div class="kicker mono" data-scramble>съёмки на условиях tfp · набор портфолио</div>
+      <h1 class="hero-title">
+        <span class="line"><span>Снимаю</span></span>
+        <span class="line"><span>людей, <em class="acc">на которых</em></span></span>
+        <span class="line"><span>хочется смотреть</span></span>
+      </h1>
+      <p class="hero-lead">
+        Меня зовут <b>Фарит</b>, я фотограф из <b>Казани</b> и собираю сильное портфолио.
+        Ищу героев с привлекательной внешностью, крутым стилем или ярким образом
+        и харизмой. Съёмки бесплатные — по принципу <b>TFP</b>: ты получаешь кадры,
+        я — работу в портфолио.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-fill" href="#contacts" data-magnetic>участвовать в съёмке <span>→</span></a>
+        <a class="btn btn-ghost" href="#gallery" data-magnetic>смотреть работы</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-frame">
+        <img id="heroImg" alt="Фотограф с камерой">
+        <div class="hero-tag mono">я · и · моя камера</div>
+      </div>
+      <svg class="badge" viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="badge-bg" cx="100" cy="100" r="99"/>
+        <defs><path id="circ" d="M100,100 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0"/></defs>
+        <text><textPath href="#circ">съемка · казань · tfp · портфолио · ищу модель · фотосессия ·</textPath></text>
+        <text class="badge-star" x="92" y="110">✦</text>
+      </svg>
+    </div>
+
+    <div class="hero-coords mono">55.795819° n · 49.115331° e — казань</div>
+    <div class="scroll-hint mono"><i></i> листай</div>
+  </section>
+
+  <!-- БЕГУЩАЯ СТРОКА -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <!-- КОГО ИЩУ -->
+  <section class="sec" id="looking">
+    <div class="sec-head" data-reveal>
+      <div class="sec-meta mono"><span class="num">01</span><span class="rule"></span><span data-scramble>кого я ищу</span></div>
+      <h2 class="sec-title">Лица, стиль <em class="acc">и характер</em></h2>
+    </div>
+
+    <div class="cards" data-reveal>
+      <article class="card">
+        <span class="c-ico" aria-hidden="true">а</span>
+        <span class="c-num">/ 01</span>
+        <h3>Привлекательная внешность</h3>
+        <p>Выразительные черты, интересные типажи, живая мимика. Не «как в журнале»,
+           а по-настоящему: веснушки, скулы, взгляд, улыбка — то, что цепляет.</p>
+      </article>
+      <article class="card">
+        <span class="c-ico" aria-hidden="true">б</span>
+        <span class="c-num">/ 02</span>
+        <h3>Крутой стиль и образ</h3>
+        <p>Одежда, цвет волос, тату, аксессуары, субкультура — всё, что делает тебя
+           узнаваемым. Яркий образ половина кадра: остальное доделает свет.</p>
+      </article>
+      <article class="card">
+        <span class="c-ico" aria-hidden="true">в</span>
+        <span class="c-num">/ 03</span>
+        <h3>Харизма</h3>
+        <p>Умение быть собой перед камерой, смелость экспериментировать и желание
+           рассказать историю. Энергия считывается через объектив лучше любого реквизита.</p>
+      </article>
+    </div>
+
+    <p class="looking-note" data-reveal>Опыт позирования не нужен — <b>нужны желание, открытость и пара часов времени.</b></p>
+  </section>
+
+  <!-- TFP -->
+  <section class="sec sec-light" id="tfp">
+    <div class="sec-head" data-reveal>
+      <div class="sec-meta mono"><span class="num">02</span><span class="rule"></span><span data-scramble>инфо о tfp и условия</span></div>
+      <h2 class="sec-title">Что такое <em class="acc">time for prints</em></h2>
+    </div>
+
+    <p class="tfp-lead" data-reveal>
+      <mark>TFP (time for prints)</mark> — формат съёмки, при котором никто никому не платит:
+      модель вкладывает время и образ, фотограф — время, технику и обработку.
+      Взамен каждый получает кадры, которые не стыдно поставить в портфолио.
+      Все условия фиксируем заранее.
+    </p>
+
+    <div class="tfp-cols" data-reveal>
+      <div class="tfp-col">
+        <h4>что получаешь ты</h4>
+        <ul>
+          <li>10–15 кадров в авторской обработке + лёгкая ретушь</li>
+          <li>Превью через 3 дня, полная серия — за 7–10 дней</li>
+          <li>Кадры в полном размере для портфолио и соцсетей</li>
+          <li>Свобода: идеи и образ собираем вместе</li>
+        </ul>
+      </div>
+      <div class="tfp-col">
+        <h4>что нужно от тебя</h4>
+        <ul>
+          <li>Пунктуальность и подтверждённая договорённость</li>
+          <li>Образ и одежда по согласованному мудборду</li>
+          <li>Согласие на публикацию кадров с указанием друг друга</li>
+          <li>Хорошее настроение — остальное берёт на себя камера</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tfp-note" data-reveal>
+      <span class="star" aria-hidden="true">✦</span>
+      <p><b>Важно:</b> TFP — не коммерческая съёмка, гонораров нет ни с одной стороны.
+         Аренду студии при необходимости делим пополам; уличные локации Казани — бесплатно.
+         Все кадры публикуются только с взаимного согласия.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step" data-reveal><span class="s-num">шаг 01</span><h5>Заявка</h5><p>Пишешь в Telegram или Instagram, прикрепляешь фото и пару слов о себе.</p></div>
+      <div class="step" data-reveal data-delay="100"><span class="s-num">шаг 02</span><h5>Обсуждение</h5><p>Выбираем идею, образ, локацию и дату. Собираю мудборд и референсы.</p></div>
+      <div class="step" data-reveal data-delay="200"><span class="s-num">шаг 03</span><h5>Съёмка</h5><p>1,5–3 часа в студии или в городе. Показываю кадры на экране, правим на месте.</p></div>
+      <div class="step" data-reveal data-delay="300"><span class="s-num">шаг 04</span><h5>Отдача</h5><p>Превью — через 3 дня, готовая серия — через 7–10 дней. Отмечаем друг друга.</p></div>
+    </div>
+  </section>
+
+  <!-- ГАЛЕРЕЯ -->
+  <section class="sec" id="gallery">
+    <div class="sec-head g-head" data-reveal>
+      <div>
+        <div class="sec-meta mono"><span class="num">03</span><span class="rule"></span><span data-scramble>галерея работ</span></div>
+        <h2 class="sec-title">Избранные <em class="acc">кадры</em></h2>
+      </div>
+      <div class="filters" id="filters" role="tablist" aria-label="Фильтры галереи"></div>
+    </div>
+    <div class="g-grid" id="gGrid"></div>
+    <p class="g-empty" id="gEmpty" hidden>в этой подборке пока пусто</p>
+  </section>
+
+  <!-- ЛЕНТА -->
+  <div class="strip-wrap" aria-hidden="true"><div class="strip" id="strip"></div></div>
+
+  <!-- КОНТАКТЫ -->
+  <section class="sec sec-light" id="contacts">
+    <div class="sec-head" data-reveal>
+      <div class="sec-meta mono"><span class="num">04</span><span class="rule"></span><span data-scramble>контакты и заявка</span></div>
+      <h2 class="sec-title">Пиши — <em class="acc">отвечу в течение дня</em></h2>
+    </div>
+
+    <div class="contact-grid">
+      <div data-reveal>
+        <div class="c-list">
+          <a class="c-row" id="rowTg" href="#" target="_blank" rel="noopener" data-peek="0">
+            <span class="c-key">telegram</span><span class="c-val" id="tgVal">@ph_farengate</span><span class="c-go">↗</span>
+          </a>
+          <div class="c-row">
+            <span class="c-key">телефон</span><span class="c-val" id="phoneVal">+7 (996) 336-56-29</span>
+            <button class="copy-btn" id="copyPhone" type="button">копировать</button>
+          </div>
+          <a class="c-row" id="rowIg" href="#" target="_blank" rel="noopener" data-peek="1">
+            <span class="c-key">instagram</span><span class="c-val" id="igVal">@far.engate</span><span class="c-go">↗</span>
+          </a>
+        </div>
+        <p class="c-note">
+          <b>Как писать:</b> «Привет, хочу на TFP» + пара фото или ссылка на соцсети.
+          Так я сразу пойму образ и предложу идею съёмки. Казань и пригород,
+          будни вечером и выходные — целиком.
+        </p>
+      </div>
+
+      <form class="form" id="tfpForm" data-reveal data-delay="120">
+        <h3>Быстрая заявка</h3>
+        <p class="f-sub">Заполни — сообщение соберётся и откроется в Telegram.</p>
+        <div class="field">
+          <label for="fName">как тебя зовут</label>
+          <input id="fName" name="name" type="text" placeholder="Имя" required>
+        </div>
+        <div class="field">
+          <label for="fContact">telegram или телефон</label>
+          <input id="fContact" name="contact" type="text" placeholder="@username / +7 …" required>
+        </div>
+        <div class="field">
+          <label for="fAbout">пара слов о себе и образе</label>
+          <textarea id="fAbout" name="about" rows="3" placeholder="Стиль, опыт, идеи, ссылки на соцсети…"></textarea>
+        </div>
+        <button class="btn btn-fill" type="submit" data-magnetic>отправить в telegram <span>→</span></button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="f-name">ФОТОСЕССИЯ <em>· съемка и сотрудничество</em></div>
+  <span class="mono">© 2026 казань · tfp-съёмки · все кадры с согласия моделей</span>
+  <a class="to-top" href="#top">наверх <span>↑</span></a>
+</footer>
+
+<!-- ЛАЙТБОКС -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фото">
+  <span class="lb-count mono" id="lbCount">01 / 10</span>
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Закрыть">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Предыдущее">←</button>
+  <figure class="lb-fig">
+    <img id="lbImg" alt="">
+    <figcaption><b id="lbTitle"></b><span class="mono" id="lbCat"></span></figcaption>
+  </figure>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Следующее">→</button>
+</div>
+
+<div class="peek" id="peek"><img id="peekImg" alt=""></div>
+<div class="toast" id="toast">готово</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   НАСТРОЙКИ САЙТА — МЕНЯЙ ЗДЕСЬ
+   ═══════════════════════════════════════════════════════════ */
+const PHOTO_DIR = 'photos/';      // папка с твоими фото в корне проекта
+const PHOTO_EXT = '.jpg';         // расширение твоих файлов (.jpg / .jpeg / .png / .webp)
+
+const CONTACTS = {
+  telegramUrl : 'https://t.me/ph_farengate',
+  telegramUser: '@ph_farengate',
+  phoneView   : '+7 (996) 336-56-29',
+  phoneRaw    : '+79963365629',
+  instagramUrl: 'https://instagram.com/far.engate',
+  instagramUser:'@far.engate'
+};
+
+/* Галерея: file — имя файла в папке photos (photo-01 … photo-10),
+   fallback — заглушка, если файла ещё нет. */
+const GALLERY = [
+  {file:'photo-01', title:'Тишина',        cat:'portrait',  ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/18624f9c6-d378-4a4c-ac04-404bf05f8f0e.png'},
+  {file:'photo-02', title:'Городской свет',cat:'street',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1cb3abf2a-557c-4eb1-97fe-a8aa8ea80476.png'},
+  {file:'photo-03', title:'Скульптура',    cat:'studio',    ar:'1/1', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1179bec1b-32fa-44c3-8b5d-b693bb9c4ef3.png'},
+  {file:'photo-04', title:'Движение',      cat:'studio',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1ad75129d-de63-4584-bce2-278a.png'},
+  {file:'photo-05', title:'Неон',          cat:'night',     ar:'1/1', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1824e6585-3aeb-42a8-b228-26635f0ad635.png'},
+  {file:'photo-06', title:'Против света',  cat:'portrait',  ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/13a25347f-c337-438d-bf5a-64317757ad7b.png'},
+  {file:'photo-07', title:'Грим',          cat:'studio',    ar:'1/1', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/166ce74cd-967f-490a-98cd-6894f50ae789.png'},
+  {file:'photo-08', title:'Крыши',         cat:'street',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1a751d577-0ac6-46d3-adb4-cd6a1f3b3121.png'},
+  {file:'photo-09', title:'За кадром',     cat:'backstage', ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1d3cb7b04-0f7b-4203-8149-9b5a58f1f85d.png'},
+  {file:'photo-10', title:'Полутень',      cat:'portrait',  ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1f6151387-d5ea-464b-859f-a75269d6f140.png'}
+];
+const HERO_FALLBACK = 'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1584253ca-ce4a-415b-bf36-8705607a00de.png';
+const CATS = {all:'все', portrait:'портрет', street:'стрит', studio:'студия', night:'ночь', backstage:'бэкстейдж'};
+
+/* ═══════════ УТИЛИТЫ ═══════════ */
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function smartImg(el, file, fallback, alt){
+  el.alt = alt || '';
+  el.loading = 'lazy';
+  el.src = PHOTO_DIR + file + PHOTO_EXT;
+  el.addEventListener('error', () => {
+    if(!el.dataset.fb){ el.dataset.fb = '1'; el.src = fallback; }
+  });
+  return el;
+}
+function showToast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(t._id);
+  t._id = setTimeout(()=>t.classList.remove('on'), 2400);
+}
+
+/* ═══════════ ПРЕЛОАДЕР ═══════════ */
+(function(){
+  const pre = $('#preloader'), cnt = $('#preCount');
+  if(reduced){ pre.remove(); document.body.classList.add('loaded'); return; }
+  const t0 = performance.now();
+  (function tick(t){
+    const p = Math.min(100, (t - t0) / 13);
+    cnt.textContent = String(Math.floor(p)).padStart(3,'0');
+    if(p < 100) requestAnimationFrame(tick);
+    else setTimeout(()=>{
+      pre.classList.add('done');
+      document.body.classList.add('loaded');
+      setTimeout(()=>pre.remove(), 1100);
+    }, 220);
+  })(t0);
+})();
+
+/* ═══════════ КУРСОР + МАГНИТ ═══════════ */
+(function(){
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches || reduced) return;
+  document.documentElement.classList.add('custom-cursor');
+  const dot = $('.cursor-dot'), ring = $('.cursor-ring'), label = $('#cursorLabel');
+  let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY;
+    dot.style.transform = 'translate('+mx+'px,'+my+'px) translate(-50%,-50%)'; }, {passive:true});
+  (function loop(){
+    rx += (mx-rx)*.16; ry += (my-ry)*.16;
+    ring.style.transform = 'translate('+rx+'px,'+ry+'px) translate(-50%,-50%)';
+    requestAnimationFrame(loop);
+  })();
+  document.addEventListener('mouseover', e => {
+    const view = e.target.closest('[data-cursor]');
+    const link = e.target.closest('a,button,.filter');
+    document.body.classList.toggle('cur-view', !!view);
+    document.body.classList.toggle('cur-link', !view && !!link);
+    if(view) label.textContent = view.dataset.cursor;
+  });
+  $$('[data-magnetic]').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.transform = 'translate('+((e.clientX-r.left-r.width/2)*.22)+'px,'+((e.clientY-r.top-r.height/2)*.34)+'px)';
+    });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+})();
+
+/* ═══════════ REVEAL + SCRAMBLE ═══════════ */
+function scramble(el){
+  if(reduced) return;
+  const orig = el.dataset.text || el.textContent;
+  el.dataset.text = orig;
+  const pool = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ#/0123456789·';
+  let f = 0;
+  const id = setInterval(()=>{
+    f++;
+    let out = '';
+    for(let i=0;i<orig.length;i++){
+      out += (i < f/2 || orig[i]===' ') ? orig[i] : pool[Math.floor(Math.random()*pool.length)];
+    }
+    el.textContent = out;
+    if(f/2 >= orig.length){ clearInterval(id); el.textContent = orig; }
+  }, 28);
+}
+const io = new IntersectionObserver(es => es.forEach(en => {
+  if(!en.isIntersecting) return;
+  const el = en.target;
+  el.style.transitionDelay = (el.dataset.delay || 0) + 'ms';
+  el.classList.add('in');
+  if(el.hasAttribute('data-scramble')) scramble(el);
+  io.unobserve(el);
+}), {threshold:.15});
+$$('[data-reveal],[data-scramble]').forEach(el => io.observe(el));
+
+/* ═══════════ АКТИВНЫЙ ПУНКТ МЕНЮ ═══════════ */
+const secIO = new IntersectionObserver(es => es.forEach(en => {
+  if(en.isIntersecting){
+    $$('.nav-link').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+en.target.id));
+  }
+}), {rootMargin:'-45% 0px -50% 0px'});
+$$('main section[id]').forEach(s => secIO.observe(s));
+
+/* ═══════════ ШАПКА: ПРОГРЕСС + ТЁМНАЯ/СВЕТЛАЯ ПОДЛОЖКА ═══════════ */
+(function(){
+  const nav = $('#nav'), bar = $('#progressBar');
+  const lightSecs = $$('.sec-light');
+  let ticking = false;
+  function paint(){
+    ticking = false;
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    bar.style.width = (max > 0 ? doc.scrollTop / max * 100 : 0) + '%';
+
+    nav.classList.toggle('scrolled', doc.scrollTop > 60);
+
+    /* какая секция находится под шапкой? */
+    const probeY = nav.offsetHeight / 2 + 4;
+    let onLight = false;
+    lightSecs.forEach(sec => {
+      const r = sec.getBoundingClientRect();
+      if(r.top <= probeY && r.bottom >= probeY) onLight = true;
+    });
+    nav.classList.toggle('on-light', onLight && !document.body.classList.contains('menu-open'));
+  }
+  function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(paint); } }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll);
+  paint();
+  window._navPaint = paint;
+})();
+
+/* ═══════════ МОБИЛЬНОЕ МЕНЮ ═══════════ */
+$('#burger').addEventListener('click', () => {
+  document.body.classList.toggle('menu-open');
+  document.body.classList.toggle('lock');
+  if(window._navPaint) window._navPaint();
+});
+$$('#menu a').forEach(a => a.addEventListener('click', () => {
+  document.body.classList.remove('menu-open','lock');
+  if(window._navPaint) window._navPaint();
+}));
+
+/* ═══════════ БЕГУЩАЯ СТРОКА ═══════════ */
+(function(){
+  const words = 'tfp-съёмки ✦ казань ✦ ищу лица ✦ стиль ✦ харизма ✦ портфолио 2026 ✦ бесплатно для моделей ✦ ';
+  $('#tickerTrack').innerHTML = '<span>'+words.repeat(3)+'</span><span>'+words.repeat(3)+'</span>';
+})();
+
+/* ═══════════ HERO ФОТО ═══════════ */
+smartImg($('#heroImg'), 'hero', HERO_FALLBACK, 'Фотограф с камерой');
+$('#heroImg').loading = 'eager';
+
+/* ═══════════ ГАЛЕРЕЯ ═══════════ */
+let currentList = GALLERY.slice();
+const grid = $('#gGrid');
+
+function renderFilters(){
+  const box = $('#filters');
+  box.innerHTML = '';
+  Object.keys(CATS).forEach(key => {
+    const b = document.createElement('button');
+    b.className = 'filter' + (key==='all' ? ' on' : '');
+    b.type = 'button';
+    b.textContent = CATS[key];
+    b.dataset.filter = key;
+    b.addEventListener('click', () => {
+      $$('.filter').forEach(f => f.classList.remove('on'));
+      b.classList.add('on');
+      renderGallery(key);
+    });
+    box.appendChild(b);
+  });
+}
+function renderGallery(filter){
+  grid.innerHTML = '';
+  currentList = GALLERY.filter(g => filter==='all' || g.cat===filter);
+  $('#gEmpty').hidden = currentList.length > 0;
+  currentList.forEach((item, i) => {
+    const fig = document.createElement('figure');
+    fig.className = 'g-item pop';
+    fig.style.aspectRatio = item.ar;
+    fig.style.animationDelay = (i*70)+'ms';
+    fig.setAttribute('data-cursor','смотреть');
+    const img = smartImg(document.createElement('img'), item.file, item.fallback, item.title);
+    const cap = document.createElement('figcaption');
+    cap.className = 'g-cap';
+    cap.innerHTML = '<b>'+item.title+'</b><span class="mono">'+CATS[item.cat]+'</span>';
+    fig.append(img, cap);
+    fig.addEventListener('click', () => openLightbox(i));
+    grid.appendChild(fig);
+  });
+}
+renderFilters();
+renderGallery('all');
+
+/* ═══════════ ЛЕНТА-СТРИП ═══════════ */
+(function(){
+  const strip = $('#strip');
+  const make = () => GALLERY.forEach(item => {
+    const f = document.createElement('figure');
+    f.appendChild(smartImg(document.createElement('img'), item.file, item.fallback, item.title));
+    strip.appendChild(f);
+  });
+  make(); make(); /* дубликат для бесшовного цикла */
+})();
+
+/* ═══════════ ЛАЙТБОКС ═══════════ */
+const lb = $('#lightbox');
+let lbIndex = 0;
+function lbShow(i){
+  lbIndex = (i + currentList.length) % currentList.length;
+  const item = currentList[lbIndex];
+  const img = $('#lbImg');
+  delete img.dataset.fb;
+  smartImg(img, item.file, item.fallback, item.title);
+  img.loading = 'eager';
+  $('#lbTitle').textContent = item.title;
+  $('#lbCat').textContent = CATS[item.cat];
+  $('#lbCount').textContent = String(lbIndex+1).padStart(2,'0') + ' / ' + String(currentList.length).padStart(2,'0');
+}
+function openLightbox(i){ lbShow(i); lb.classList.add('open'); document.body.classList.add('lock'); }
+function closeLightbox(){ lb.classList.remove('open'); document.body.classList.remove('lock'); }
+$('#lbClose').addEventListener('click', closeLightbox);
+$('#lbPrev').addEventListener('click', () => lbShow(lbIndex-1));
+$('#lbNext').addEventListener('click', () => lbShow(lbIndex+1));
+lb.addEventListener('click', e => { if(e.target === lb) closeLightbox(); });
+addEventListener('keydown', e => {
+  if(!lb.classList.contains('open')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowLeft') lbShow(lbIndex-1);
+  if(e.key === 'ArrowRight') lbShow(lbIndex+1);
+});
+let touchX = null;
+lb.addEventListener('touchstart', e => { touchX = e.changedTouches[0].clientX; }, {passive:true});
+lb.addEventListener('touchend', e => {
+  if(touchX === null) return;
+  const d = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(d) > 50) lbShow(lbIndex + (d < 0 ? 1 : -1));
+  touchX = null;
+}, {passive:true});
+
+/* ═══════════ КОНТАКТЫ ═══════════ */
+$('#rowTg').href = CONTACTS.telegramUrl;
+$('#tgVal').textContent = CONTACTS.telegramUser;
+$('#rowIg').href = CONTACTS.instagramUrl;
+$('#igVal').textContent = CONTACTS.instagramUser;
+$('#phoneVal').textContent = CONTACTS.phoneView;
+$('#copyPhone').addEventListener('click', () => {
+  const done = () => showToast('номер скопирован');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(CONTACTS.phoneRaw).then(done).catch(done);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = CONTACTS.phoneRaw; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy'); ta.remove(); done();
+  }
+});
+
+/* пик-превью при наведении на контакты */
+(function(){
+  const peek = $('#peek'), peekImg = $('#peekImg');
+  const sources = [GALLERY[4], GALLERY[7]];
+  let px = innerWidth/2, py = innerHeight/2;
+  $$('.c-row[data-peek]').forEach(row => {
+    const src = sources[+row.dataset.peek] || GALLERY[0];
+    row.addEventListener('mouseenter', () => {
+      delete peekImg.dataset.fb;
+      smartImg(peekImg, src.file, src.fallback, src.title);
+      peek.classList.add('on');
+    });
+    row.addEventListener('mouseleave', () => peek.classList.remove('on'));
+  });
+  addEventListener('mousemove', e => { px = e.clientX; py = e.clientY;
+    peek.style.left = (px + 150) + 'px'; peek.style.top = py + 'px'; }, {passive:true});
+})();
+
+/* форма → telegram */
+$('#tfpForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const msg = 'Привет, Фарит! Меня зовут ' + (fd.get('name')||'') +
+              '. Связь: ' + (fd.get('contact')||'') + '.' +
+              (fd.get('about') ? ' О себе: ' + fd.get('about') : '') +
+              ' Хочу на TFP-съёмку ✦';
+  window.open(CONTACTS.telegramUrl + '?text=' + encodeURIComponent(msg), '_blank');
+  showToast('открываю telegram…');
+  e.target.reset();
+});
+</script>
+</body>
+</html>
