@@ -518,9 +518,9 @@ footer .mono{color:var(--muted)}
     <div class="hero-copy">
       <div class="kicker mono" data-scramble>съёмки на условиях tfp · набор портфолио</div>
       <h1 class="hero-title">
-        <span class="line"><span>Снимаю</span></span>
-        <span class="line"><span>людей, <em class="acc">на которых</em></span></span>
-        <span class="line"><span>хочется смотреть</span></span>
+        <span class="line"><span>ИЩУ ЛИЦА,</span></span>
+        <span class="line"><span>КОТОРЫЕ <em class="acc">ЦЕПЛЯЮТ</em></span></span>
+        <span class="line"><span>С ПЕРВОГО ВЗГЛЯДА</span></span>
       </h1>
       <p class="hero-lead">
         Меня зовут <b>Фарит</b>, я фотограф из <b>Казани</b> и собираю сильное портфолио.
@@ -678,7 +678,7 @@ footer .mono{color:var(--muted)}
           </a>
         </div>
         <p class="c-note">
-          <b>Как писать:</b> «Привет, хочу на TFP» + пара фото или ссылка на соцсети.
+          <b>Как писать:</b> «Привет, хочу на TFP» + ссылка на соцсети.
           Так я сразу пойму образ и предложу идею съёмки. Казань и пригород,
           будни вечером и выходные — целиком.
         </p>
@@ -707,7 +707,7 @@ footer .mono{color:var(--muted)}
 
 <footer>
   <div class="f-name">ФОТОСЕССИЯ <em>· съемка и сотрудничество</em></div>
-  <span class="mono">© 2026 казань · tfp-съёмки · все кадры с согласия моделей</span>
+  <span class="mono">© 2026 казань · tfp-съёмки · портфолио</span>
   <a class="to-top" href="#top">наверх <span>↑</span></a>
 </footer>
 
@@ -734,30 +734,33 @@ const PHOTO_DIR = 'photos/';      // папка с твоими фото в ко
 const PHOTO_EXT = '.jpg';         // расширение твоих файлов (.jpg / .jpeg / .png / .webp)
 
 const CONTACTS = {
-  telegramUrl : 'https://t.me/ph_farengate',
-  telegramUser: '@ph_farengate',
+  telegramUrl : 'https://t.me/photo_kazan16',
+  telegramUser: '@photo_kazan16',
   phoneView   : '+7 (996) 336-56-29',
   phoneRaw    : '+79963365629',
-  instagramUrl: 'https://instagram.com/far.engate',
-  instagramUser:'@far.engate'
+  instagramUrl: 'https://instagram.com/photo_kazan16',
+  instagramUser:'@photo_kazan16'
 };
 
 /* Галерея: file — имя файла в папке photos (photo-01 … photo-10),
    fallback — заглушка, если файла ещё нет. */
 const GALLERY = [
-  {file:'photo-01', title:'Тишина',        cat:'portrait',  ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/18624f9c6-d378-4a4c-ac04-404bf05f8f0e.png'},
-  {file:'photo-02', title:'Городской свет',cat:'street',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1cb3abf2a-557c-4eb1-97fe-a8aa8ea80476.png'},
-  {file:'photo-03', title:'Скульптура',    cat:'studio',    ar:'1/1', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1179bec1b-32fa-44c3-8b5d-b693bb9c4ef3.png'},
-  {file:'photo-04', title:'Движение',      cat:'studio',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1ad75129d-de63-4584-bce2-278a.png'},
-  {file:'photo-05', title:'Неон',          cat:'night',     ar:'1/1', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1824e6585-3aeb-42a8-b228-26635f0ad635.png'},
-  {file:'photo-06', title:'Против света',  cat:'portrait',  ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/13a25347f-c337-438d-bf5a-64317757ad7b.png'},
-  {file:'photo-07', title:'Грим',          cat:'studio',    ar:'1/1', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/166ce74cd-967f-490a-98cd-6894f50ae789.png'},
-  {file:'photo-08', title:'Крыши',         cat:'street',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1a751d577-0ac6-46d3-adb4-cd6a1f3b3121.png'},
-  {file:'photo-09', title:'За кадром',     cat:'backstage', ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1d3cb7b04-0f7b-4203-8149-9b5a58f1f85d.png'},
-  {file:'photo-10', title:'Полутень',      cat:'portrait',  ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1f6151387-d5ea-464b-859f-a75269d6f140.png'}
+  {file:'photo-01', title:'Свет',          cat:'studio',    ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/18624f9c6-d378-4a4c-ac04-404bf05f8f0e.png'},
+  {file:'photo-02', title:'Изгиб',		   cat:'studio',    ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1cb3abf2a-557c-4eb1-97fe-a8aa8ea80476.png'},
+  {file:'photo-03', title:'Уверенность',        cat:'studio',    ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1179bec1b-32fa-44c3-8b5d-b693bb9c4ef3.png'},
+  {file:'photo-04', title:'Сомнения',      cat:'studio',    ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1ad75129d-de63-4584-bce2-278a.png'},
+  {file:'photo-05', title:'Безмятежность',   cat:'studio',    ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1824e6585-3aeb-42a8-b228-26635f0ad635.png'},
+  {file:'photo-06', title:'Объятия',       cat:'night',     ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/13a25347f-c337-438d-bf5a-64317757ad7b.png'},
+  {file:'photo-07', title:'Любовь',        cat:'street',    ar:'1/1', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/166ce74cd-967f-490a-98cd-6894f50ae789.png'},
+  {file:'photo-08', title:'Позитив',       cat:'street',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1a751d577-0ac6-46d3-adb4-cd6a1f3b3121.png'},
+  {file:'photo-09', title:'Дружба',        cat:'street',    ar:'4/5', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1d3cb7b04-0f7b-4203-8149-9b5a58f1f85d.png'},
+  {file:'photo-10', title:'Взгляд',        cat:'portrait',    ar:'3/4', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1f6151387-d5ea-464b-859f-a75269d6f140.png'},
+  {file:'photo-11', title:'Краски осени',  cat:'park',      ar:'16/9', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1f6151387-d5ea-464b-859f-a75269d6f140.png'},
+  {file:'photo-12', title:'Счастье',       cat:'park',      ar:'4/3', fallback:'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1f6151387-d5ea-464b-859f-a75269d6f140.png'},
+  
 ];
 const HERO_FALLBACK = 'https://image.qwenlm.ai/public_source/c1c207c0-8c53-4b0d-918c-2ce2819a5570/1584253ca-ce4a-415b-bf36-8705607a00de.png';
-const CATS = {all:'все', portrait:'портрет', street:'стрит', studio:'студия', night:'ночь', backstage:'бэкстейдж'};
+const CATS = {all:'все', portrait:'портрет', street:'в городе', studio:'студия', night:'ночь', park:'в парке'};
 
 /* ═══════════ УТИЛИТЫ ═══════════ */
 const $  = s => document.querySelector(s);
